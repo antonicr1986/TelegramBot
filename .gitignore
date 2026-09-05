@@ -1,1 +1,23 @@
+# Secretos: el token va en una variable de entorno, nunca en el repositorio
 .env
+
+# Bytecode de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Cachés de herramientas
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editores y sistema
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini

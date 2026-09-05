@@ -1,0 +1,10 @@
+# En el repositorio siempre LF; en el disco, lo que cada sistema espere
+* text=auto
+
+*.py        text eol=lf
+*.txt       text eol=lf
+*.md        text eol=lf
+.gitignore  text eol=lf
+
+*.png       binary
+*.jpg       binary

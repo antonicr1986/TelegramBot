@@ -1,0 +1,33 @@
+name: Security
+
+# Este repositorio no tiene pipeline de compilacion: seria una copia del de
+# otros proyectos y no aportaria nada. Lo que si necesita, como cualquier
+# repositorio, es vigilar que no se cuelen credenciales.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  # Ademas, una revision semanal: las reglas de gitleaks se amplian con el
+  # tiempo, asi que un escaneo periodico puede encontrar algo que hoy no ve
+  schedule:
+    - cron: '0 6 * * 1'
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # gitleaks necesita el historial completo
+
+      - name: Install gitleaks
+        run: |
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz" | tar -xz gitleaks
+          sudo mv gitleaks /usr/local/bin/
+
+      # --redact evita que el secreto encontrado acabe escrito en los logs,
+      # que en un repositorio publico puede leer cualquiera
+      - name: Scan for secrets
+        run: gitleaks git . --config .gitleaks.toml --redact --verbose
